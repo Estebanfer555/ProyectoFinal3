@@ -37,13 +37,13 @@ lv = 'V'
 lr = 'R'
 
 #Comunicacion con puerto serial
-esp = serial.Serial("COM9", 9600)
+esp = serial.Serial("COM7", 9600)
 
 #Clase para iniciar la interfaz
 class Screen (QMainWindow):
     def __init__(self):
         super(Screen, self).__init__()
-        loadUi("D:\Proyecto Final\interfazPF.ui", self) #Cargar archivo con la interfaz
+        loadUi("D:\ProyectoFinal\Interfaz_ProyectoFinal.ui", self) #Cargar archivo con la interfaz
 
         #Funciones de los botones
         self.cargar.clicked.connect(self.cargarImagen)
@@ -272,8 +272,8 @@ class WorkProyecto(QThread): #QTrend para uso de hilos y poder ejecutar interfaz
         self.kg_tot= kg_exp
 
 
-        cap = cv2.VideoCapture(0)
-        #cap = cv2.VideoCapture('D:/Proyecto Final/video2.avi')
+        #cap = cv2.VideoCapture(0)
+        cap = cv2.VideoCapture('D:/ProyectoFinal/video2.avi')
         while self.hilo_corriendo:
             ret, frame = cap.read()
             
@@ -313,6 +313,9 @@ class WorkProyecto(QThread): #QTrend para uso de hilos y poder ejecutar interfaz
                             print(self.limon_counter)
                             cv2.line(frame,(50,350),(600,350), (0,255,0), 3) #linea en la mitad del area aproximadamente
                             print(x, y, w, h)
+
+                            esp.write(lv.encode('ascii'))  #Agregar procesamiento paralelo con hilos
+                            time.sleep(2)
 
                             
                           
@@ -405,8 +408,8 @@ app = QApplication(sys.argv)
 principal= Screen()
 widget = QtWidgets.QStackedWidget()
 widget.addWidget(principal)
-widget.setFixedHeight(980)
-widget.setFixedWidth(1920)
+#widget.setFixedHeight(980)
+#widget.setFixedWidth(1920)
 
 widget.show()
 try:
